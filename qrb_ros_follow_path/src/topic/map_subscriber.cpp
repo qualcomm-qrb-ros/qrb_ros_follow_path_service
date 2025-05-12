@@ -137,9 +137,8 @@ void MapSubscriber::map_callback(nav_msgs::msg::OccupancyGrid::ConstSharedPtr ma
 
   geometry_msgs::msg::TransformStamped laser_to_map;
   try {
-    laser_to_map = tf_buffer_->lookupTransform("map", "laser",
-        //"map", "base_scan",
-        tf2::TimePoint(), tf2::durationFromSec(1.0));
+    laser_to_map = tf_buffer_->lookupTransform(  //"map", "laser",
+        "map", "base_scan", tf2::TimePoint(), tf2::durationFromSec(1.0));
   } catch (tf2::LookupException & ex) {
     RCLCPP_INFO(logger_, "transform from laser to map not ready");
     return;
