@@ -81,9 +81,8 @@ void LaserScanSubscriber::laser_callback(sensor_msgs::msg::LaserScan::ConstShare
   geometry_msgs::msg::TransformStamped transformStamped;
 
   try {
-    transformStamped = tf_buffer_->lookupTransform("map", "laser",
-        //"map", "base_scan",
-        tf2::TimePoint(), tf2::durationFromSec(1.0));
+    transformStamped = tf_buffer_->lookupTransform(  //"map", "laser",
+        "map", "base_scan", tf2::TimePoint(), tf2::durationFromSec(1.0));
   } catch (tf2::LookupException & ex) {
     RCLCPP_INFO(logger_, "transform from laser to map not ready");
     return;
