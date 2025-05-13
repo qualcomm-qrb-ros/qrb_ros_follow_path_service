@@ -79,6 +79,7 @@ ament_target_dependencies(qrb_ros_follow_path
   "qrb_ros_robot_base_msgs"
   "sensor_msgs"
   "rclcpp_lifecycle"
+  "qrb_follow_path_manager"
 )
 
 target_link_libraries(qrb_ros_follow_path
@@ -86,8 +87,7 @@ target_link_libraries(qrb_ros_follow_path
 )
 
 target_link_libraries(qrb_ros_follow_path
-  #"qrb_follow_path_manager"
-  "${PROJECT_SOURCE_DIR}/../build/qrb_follow_path_manager/libqrb_follow_path_manager.so"
+  "qrb_follow_path_manager"
 )
 
 install(TARGETS qrb_ros_follow_path
