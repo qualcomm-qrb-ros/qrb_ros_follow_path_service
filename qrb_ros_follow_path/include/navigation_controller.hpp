@@ -17,7 +17,7 @@
 #include "topic/path_publisher.hpp"
 #include "topic/tf_subscriber.hpp"
 #include "topic/twist_publisher.hpp"
-#include "manager/follow_path_manager.hpp"
+#include "follow_path_manager.hpp"
 #include <string.h>
 
 namespace qrb_ros
