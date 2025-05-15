@@ -6,7 +6,8 @@
 #ifndef QRB_ROS_NAVIGATION_NAVIGATION_PATH_SERVICE_SERVER_HPP_
 #define QRB_ROS_NAVIGATION_NAVIGATION_PATH_SERVICE_SERVER_HPP_
 
-#include "manager/follow_path_manager.hpp"
+#include "follow_path_manager.hpp"
+#include "manager/ros_common.hpp"
 #include "qrb_ros_navigation_msgs/srv/compute_follow_path.hpp"
 
 using namespace qrb::navigation;

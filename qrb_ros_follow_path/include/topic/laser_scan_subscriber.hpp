@@ -6,7 +6,8 @@
 #ifndef QRB_ROS_NAVIGATION__LASER_SCAN_SUBSCRIBER_HPP_
 #define QRB_ROS_NAVIGATION__LASER_SCAN_SUBSCRIBER_HPP_
 
-#include "manager/follow_path_manager.hpp"
+#include "follow_path_manager.hpp"
+#include "manager/ros_common.hpp"
 
 using namespace qrb::navigation;
 
