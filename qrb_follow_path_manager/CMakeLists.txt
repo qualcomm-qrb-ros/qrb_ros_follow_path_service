@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(qrb_follow_path_manager)
+project(qrb_follow_path_manager VERSION 1.0.1)
 
 set(library_name qrb_follow_path_manager)
 
@@ -42,6 +42,11 @@ target_link_libraries(qrb_follow_path_manager
 
 ament_target_dependencies(qrb_follow_path_manager
 
+)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  VERSION ${PROJECT_VERSION}
+  SOVERSION 1
 )
 
 install(TARGETS qrb_follow_path_manager
