@@ -159,6 +159,7 @@ void FollowPathActionServer::update_current_pose(PoseStamped & pose)
     auto feedback = std::make_shared<FollowPath::Feedback>();
     feedback->current_pose = pose;
     feedback->passing_waypoint_id = get_passing_waypoint(pose);
+    feedback->distance_to_goal = get_distance_to_goal(pose, feedback->passing_waypoint_id);
 
     std::shared_ptr<GoalHandleFollowPath> handle;
 
@@ -248,6 +249,15 @@ uint32_t FollowPathActionServer::get_passing_waypoint(PoseStamped & pose)
 
   uint32_t passing_id = get_passing_waypoint_id(current_point);
   return passing_id;
+}
+
+float FollowPathActionServer::get_distance_to_goal(PoseStamped & pose, uint32_t passing_id)
+{
+  point_2d current_point;
+  convert_pose_to_2d_point(pose, current_point);
+
+  float dist = manager_->get_distance_to_goal(current_point, passing_id);
+  return dist;
 }
 
 void FollowPathActionServer::convert_pose_to_2d_point(PoseStamped & pose, point_2d & point)

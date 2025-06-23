@@ -118,6 +118,11 @@ uint64_t FollowPathManager::request_follow_path(uint32_t goal, std::vector<uint3
   return follow_path_planner_->request_follow_path(goal, passing_ids);
 }
 
+float FollowPathManager::get_distance_to_goal(point_2d & current_point, uint32_t passing_id)
+{
+  return follow_path_planner_->get_distance_to_goal(current_point, passing_id);
+}
+
 uint32_t FollowPathManager::get_passing_waypoint_id(point_2d & current_point)
 {
   return follow_path_planner_->get_passing_waypoint_id(current_point);

@@ -81,6 +81,7 @@ private:
   char * thread_name_;
   std::vector<point_2d> point_list_;
   std::vector<waypoint_2d> path_list_;
+  std::vector<uint32_t> waypoint_list_;
   std::vector<sub_path_info> sub_path_list_;
   std::shared_ptr<PidController> robot_ctrl_;
   std::shared_ptr<VirtualPathManager> manager_;
@@ -132,6 +133,7 @@ public:
   void handle_amr_exception(bool exception);
   bool arrive_final_target_point_scope(point_2d & current_point, point_2d & final_point);
   uint64_t request_follow_path(uint32_t goal, std::vector<uint32_t> & passing_ids);
+  float get_distance_to_goal(point_2d & current_point, uint32_t passing_id);
   uint32_t get_passing_waypoint_id(point_2d & current_point);
   void request_stop_navigation();
   void request_stop_navigation(bool result);
