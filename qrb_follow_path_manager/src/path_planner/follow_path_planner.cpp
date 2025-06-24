@@ -176,6 +176,7 @@ uint64_t FollowPathPlanner::request_follow_path(uint32_t goal, std::vector<uint3
   point_list_.clear();
   path_list_.clear();
   sub_path_list_.clear();
+  waypoint_list_.clear();
   uint8_t type = get_path_by_waypoint(goal, passing_ids, point_list_, point_size);
   generate_path_list(point_list_, path_list_);
 
@@ -225,6 +226,60 @@ void FollowPathPlanner::update_current_pose(point_2d & point)
     return;
   }
   confirm_sub_path_invalid(point);
+}
+
+float FollowPathPlanner::get_distance_to_goal(point_2d & current_point, uint32_t passing_id)
+{
+  uint32_t next_waypoint_index = 0;
+  for (uint32_t id : waypoint_list_) {
+    next_waypoint_index++;
+    if (passing_id == id) {
+      break;
+    }
+  }
+
+  uint32_t len = waypoint_list_.size();
+  if (next_waypoint_index >= len) {
+    printf("[%s]: next_waypoint_index(%d,%d) is error\n", logger_, next_waypoint_index, len);
+    return 0;
+  }
+
+  uint32_t next_waypoint_id = waypoint_list_[next_waypoint_index];
+
+  point_2d next_waypoint;
+  bool result = manager_->get_waypoint(next_waypoint_id, next_waypoint);
+  if (!result) {
+    printf("[%s]: Get next waypoint(%d) failed\n", logger_, next_waypoint_id);
+    return 0;
+  }
+
+  double total_dist = point_distance(current_point, next_waypoint);
+
+  printf("[%s]: total_dist(current to %d)=%.2f\n", logger_, next_waypoint_id, total_dist);
+
+  for (uint32_t i = next_waypoint_index; i < len - 1; i++) {
+    point_2d p1;
+    uint32_t p1_id = waypoint_list_[i];
+    result = manager_->get_waypoint(p1_id, p1);
+    if (!result) {
+      printf("[%s]: Get p1(%d) failed\n", logger_, p1_id);
+      return 0;
+    }
+    point_2d p2;
+    uint32_t p2_id = waypoint_list_[i + 1];
+    result = manager_->get_waypoint(p2_id, p2);
+    if (!result) {
+      printf("[%s]: Get p2(%d) failed\n", logger_, p2_id);
+      return 0;
+    }
+
+    double dist = point_distance(p1, p2);
+    printf("[%s]: dist(%d to %d)=%.2f\n", logger_, p1_id, p2_id, dist);
+    total_dist += dist;
+  }
+
+  printf("[%s]: Get total distance=%.2f\n", logger_, total_dist);
+  return (float)total_dist;
 }
 
 uint32_t FollowPathPlanner::get_passing_waypoint_id(point_2d & current_point)
@@ -422,9 +477,8 @@ uint8_t FollowPathPlanner::get_path_by_waypoint(uint32_t goal_id,
   printf("[%s]: get path by waypoint(start_id=%d,goal_id=%d,passing_ids=%s)\n", logger_, start_id,
       goal_id, str.c_str());
 
-  std::vector<uint32_t> list;
   if (len == 0) {
-    get_path_start_2_goal(start, goal, path, sub_path_list_, list);
+    get_path_start_2_goal(start, goal, path, sub_path_list_, waypoint_list_);
   } else {
     std::vector<point_2d> goals;
     goals.push_back(start);
@@ -477,7 +531,7 @@ uint8_t FollowPathPlanner::get_path_by_waypoint(uint32_t goal_id,
           index++;
           continue;
         }
-        list.push_back(id);
+        waypoint_list_.push_back(id);
       }
       first_sub = false;
 
@@ -489,7 +543,7 @@ uint8_t FollowPathPlanner::get_path_by_waypoint(uint32_t goal_id,
 
   point_size = path.size();
   printf("[%s]: Get follow path(size=%d) from the waypoints\n", logger_, point_size);
-  print_follow_path(list);
+  print_follow_path(waypoint_list_);
   return TYPE_WAYPOINT_PATH;
 }
 

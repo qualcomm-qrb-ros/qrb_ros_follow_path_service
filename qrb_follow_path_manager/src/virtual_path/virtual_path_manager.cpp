@@ -62,17 +62,22 @@ uint32_t VirtualPathManager::add_waypoint(point_2d & point)
   }
 
   if (is_unknown_cell(point)) {
-    printf("[%s]: Add waypoint failed because current waypoint is unknown\n", logger_);
+    printf("[%s]: Add waypoint failed because point is unknown\n", logger_);
     return 0;
   }
 
   if (is_within_obstacle(point)) {
-    printf("[%s]: Add waypoint failed because current waypoint is an obstacle\n", logger_);
+    printf("[%s]: Add waypoint failed because point is an obstacle\n", logger_);
     return 0;
   }
 
   if (is_nearby_obstacle(point)) {
-    printf("[%s]: Add waypoint failed because the waypoint is close to the obstacle\n", logger_);
+    printf("[%s]: Add waypoint failed because point is close to the obstacle\n", logger_);
+    return 0;
+  }
+
+  if (near_waypoint(point)) {
+    printf("[%s]: Add waypoint failed because point is close to the waypoint\n", logger_);
     return 0;
   }
 

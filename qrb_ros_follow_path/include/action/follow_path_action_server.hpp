@@ -52,6 +52,8 @@ private:
 
   uint32_t get_passing_waypoint(PoseStamped & pose);
 
+  float get_distance_to_goal(PoseStamped & pose, uint32_t passing_id);
+
   void convert_pose_to_2d_point(PoseStamped & pose, point_2d & point);
 
   uint32_t get_passing_waypoint_id(point_2d & current_point);

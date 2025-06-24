@@ -48,6 +48,7 @@ public:
 
   // FollowPathActionServer
   uint64_t request_follow_path(uint32_t goal, std::vector<uint32_t> & passing_ids);
+  float get_distance_to_goal(point_2d & current_point, uint32_t passing_id);
   uint32_t get_passing_waypoint_id(point_2d & current_point);
   void request_stop_follow_path();
   void register_navigation_callback(navigation_completed_func_t cb);
