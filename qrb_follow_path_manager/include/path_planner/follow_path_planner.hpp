@@ -73,6 +73,7 @@ private:
   void publish_follow_path(std::vector<point_2d> & path);
   bool arrive_path_end_point(point_2d & current_point, std::vector<point_2d> & executing_path);
   void save_navigation_path(std::string & out);
+  bool is_passing_ids_valid(std::vector<uint32_t> & ids);
 
   uint32_t follow_path_type_;
   bool msg_queue_working_;
