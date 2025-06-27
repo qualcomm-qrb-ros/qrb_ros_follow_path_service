@@ -121,6 +121,11 @@ bool FollowPathPlanner::compute_follow_path(bool use_start,
     return false;
   }
 
+  if (!is_passing_ids_valid(passing_ids)) {
+    printf("[%s]: passing ids is invalid\n", logger_);
+    return false;
+  }
+
   bool res = compute_path_by_waypoint(start_id, goal, passing_ids, list, point_list);
   publish_follow_path(point_list);
   print_follow_path(point_list, true);
@@ -178,6 +183,10 @@ uint64_t FollowPathPlanner::request_follow_path(uint32_t goal, std::vector<uint3
   sub_path_list_.clear();
   waypoint_list_.clear();
   uint8_t type = get_path_by_waypoint(goal, passing_ids, point_list_, point_size);
+  if (type == TYPE_INVALID_PATH) {
+    printf("[%s]: Navigation type is error\n", logger_);
+    return 0;
+  }
   generate_path_list(point_list_, path_list_);
 
   // check the amr position whether is the scope of start point
@@ -471,6 +480,12 @@ uint8_t FollowPathPlanner::get_path_by_waypoint(uint32_t goal_id,
   if (!result) {
     printf("[%s]: goal(%.2f,%.2f,%.2f, id=%d) is not waypoint, follow path is invalid\n", logger_,
         current_point.x, current_point.y, current_point.angle, goal_id);
+    return TYPE_INVALID_PATH;
+  }
+
+  result = is_passing_ids_valid(passing_ids);
+  if (!result) {
+    printf("[%s]: passing ids(%s) is not waypoint, follow path is invalid\n", logger_, str.c_str());
     return TYPE_INVALID_PATH;
   }
 
@@ -1196,5 +1211,18 @@ void FollowPathPlanner::save_navigation_path(std::string & out)
   printf("[%s]: finish save file\n", logger_);
 }
 
+bool FollowPathPlanner::is_passing_ids_valid(std::vector<uint32_t> & ids)
+{
+  uint32_t len = ids.size();
+  for (uint32_t i = 0; i < len; i++) {
+    uint32_t id = ids[i];
+    bool res = is_waypoint(id);
+    if (!res) {
+      printf("[%s]: passing ids(%d) is invalid\n", logger_, id);
+      return false;
+    }
+  }
+  return true;
+}
 }  // namespace navigation
 }  // namespace qrb
