@@ -29,13 +29,13 @@ LifecycleNodeInterface::CallbackReturn MapSubscriber::on_configure(const rclcpp_
 {
   RCLCPP_INFO(logger_, "Configuring");
   init_publisher();
+  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
 LifecycleNodeInterface::CallbackReturn MapSubscriber::on_activate(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Activating");
-  init_subscriber();
   local_map_pub_->on_activate();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
@@ -43,7 +43,6 @@ LifecycleNodeInterface::CallbackReturn MapSubscriber::on_activate(const rclcpp_l
 LifecycleNodeInterface::CallbackReturn MapSubscriber::on_deactivate(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Deactivating");
-  deinit_subscriber();
   local_map_pub_->on_deactivate();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
@@ -52,13 +51,13 @@ LifecycleNodeInterface::CallbackReturn MapSubscriber::on_cleanup(const rclcpp_li
 {
   RCLCPP_INFO(logger_, "Cleaning up");
   deinit_publisher();
+  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
 LifecycleNodeInterface::CallbackReturn MapSubscriber::on_shutdown(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Shutting down");
-  deinit_publisher();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 

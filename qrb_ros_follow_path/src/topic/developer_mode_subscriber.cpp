@@ -21,6 +21,7 @@ LifecycleNodeInterface::CallbackReturn DeveloperModeSubscriber::on_configure(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Configuring");
+  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -28,7 +29,6 @@ LifecycleNodeInterface::CallbackReturn DeveloperModeSubscriber::on_activate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Activating");
-  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -36,7 +36,6 @@ LifecycleNodeInterface::CallbackReturn DeveloperModeSubscriber::on_deactivate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Deactivating");
-  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -44,6 +43,7 @@ LifecycleNodeInterface::CallbackReturn DeveloperModeSubscriber::on_cleanup(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Cleaning up");
+  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 

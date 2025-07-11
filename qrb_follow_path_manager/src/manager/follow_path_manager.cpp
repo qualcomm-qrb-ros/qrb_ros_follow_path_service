@@ -37,8 +37,9 @@ bool FollowPathManager::remove_waypoint(uint32_t id)
 
 bool FollowPathManager::get_waypoint_id_list(std::vector<uint32_t> & list)
 {
+  bool res = manager_->get_waypoint_id_list(list);
   printf("[%s]: get_waypoint_id_list=%ld\n", logger_, list.size());
-  return manager_->get_waypoint_id_list(list);
+  return res;
 }
 
 bool FollowPathManager::get_waypoint(uint32_t id, point_2d & point)

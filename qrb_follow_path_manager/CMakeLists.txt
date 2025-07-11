@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(qrb_follow_path_manager VERSION 1.0.2)
+project(qrb_follow_path_manager VERSION 1.0.3)
 
 set(library_name qrb_follow_path_manager)
 
