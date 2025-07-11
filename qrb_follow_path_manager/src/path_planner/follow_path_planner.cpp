@@ -138,6 +138,7 @@ void FollowPathPlanner::request_stop_navigation()
   printf("[%s]: Request stop follow path\n", logger_);
   is_doing_path_planner = false;
   msg_queue_working_ = false;
+  pause_ = false;
 
   stop_publish_real_path();
 }
@@ -147,6 +148,7 @@ void FollowPathPlanner::request_stop_navigation(bool result)
   printf("[%s]: Request stop follow path, result=%d\n", logger_, result);
   is_doing_path_planner = false;
   msg_queue_working_ = false;
+  pause_ = false;
   remove_all_msg();
   notify_current_path_navigation_complete(result);
 
@@ -683,7 +685,7 @@ void FollowPathPlanner::handle_msg()
     sub_path_info sub_info = sub_path_list_[sub_path_id];
     std::vector<point_2d> sub_path = sub_info.path;
     if (confirm_sub_path_invalid(sub_path)) {
-      printf("[%s]: Cancel follow path and updat new path message\n", logger_);
+      printf("[%s]: Cancel current follow path and update new path\n", logger_);
       request_stop_navigation();
       remove_all_msg();
       update_follow_path(sub_path);
@@ -815,7 +817,7 @@ void FollowPathPlanner::confirm_sub_path_invalid(point_2d current_point)
   manager_->compute_follow_path(current_point, end_point, remaining_path);
 
   if (confirm_sub_path_invalid(remaining_path)) {
-    printf("[%s]: Remove old navigation path and upate new path message\n", logger_);
+    printf("[%s]: Remove old navigation path and update new path\n", logger_);
     request_stop_navigation();
     remove_all_msg();
     // wait for last follow path stop
@@ -868,11 +870,15 @@ void FollowPathPlanner::update_follow_path(std::vector<point_2d> & path)
   uint32_t start_id = manager_->get_waypoint_id(start);
   if (start_id == 0) {
     printf("[%s]: Start point is error\n", logger_);
+    printf("[%s]: Stop current follow path\n", logger_);
+    request_stop_navigation(false);
     return;
   }
   uint32_t end_id = manager_->get_waypoint_id(end);
   if (end_id == 0) {
     printf("[%s]: End point is error\n", logger_);
+    printf("[%s]: Stop current follow path\n", logger_);
+    request_stop_navigation(false);
     return;
   }
 
@@ -900,8 +906,7 @@ void FollowPathPlanner::update_follow_path(std::vector<point_2d> & path)
 void FollowPathPlanner::update_follow_path(point_2d current_point, std::vector<point_2d> & path)
 {
   // update the virtual path if the sub path is invalid
-  printf("[%s]: --------------Sub path is invalid and update path when passing the start point \n",
-      logger_);
+  printf("[%s]: Sub path is invalid and update path when passing the start point \n", logger_);
   uint32_t len = path.size();
   point_2d start;
   point_2d end;
@@ -915,11 +920,15 @@ void FollowPathPlanner::update_follow_path(point_2d current_point, std::vector<p
   uint32_t start_id = manager_->get_waypoint_id(start);
   if (start_id == 0) {
     printf("[%s]: Start point(%f,%f,%f) is error\n", logger_, start.x, start.y, start.angle);
+    printf("[%s]: Stop current follow path\n", logger_);
+    request_stop_navigation(false);
     return;
   }
   uint32_t end_id = manager_->get_waypoint_id(end);
   if (end_id == 0) {
     printf("[%s]: End point(%f,%f,%f) is error\n", logger_, end.x, end.y, end.angle);
+    printf("[%s]: Stop current follow path\n", logger_);
+    request_stop_navigation(false);
     return;
   }
 
@@ -957,6 +966,7 @@ uint32_t FollowPathPlanner::get_current_point_waypoint_id()
   std::vector<uint32_t> list;
   bool result = manager_->get_waypoint_id_list(list);
   if (result) {
+    printf("[%s]: Get waypoint id list failed\n", logger_);
     return 0;
   }
 

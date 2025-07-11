@@ -23,6 +23,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_configure(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Configuring");
+  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -30,7 +31,6 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_activate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Activating");
-  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -38,7 +38,6 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_deactivate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Deactivating");
-  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -46,6 +45,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_cleanup(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Cleaning up");
+  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 

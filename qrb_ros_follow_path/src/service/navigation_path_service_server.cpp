@@ -98,8 +98,8 @@ void NavigationPathServiceServer::receive_follow_path_request(
   } else {
     bypassing = false;
   }
-  RCLCPP_INFO(logger_, "bypassing: %d, start=%d,goal=%d,use_start=%d,len=%d", bypassing, start,
-      goal, use_start, len);
+  RCLCPP_INFO(logger_, "compute_follow_path, bypassing: %d, start=%d,goal=%d,use_start=%d,len=%d",
+      bypassing, start, goal, use_start, len);
 
   if (bypassing) {
     res = manager_->compute_follow_path(use_start, start, goal, passing_ids, list, point_list);
