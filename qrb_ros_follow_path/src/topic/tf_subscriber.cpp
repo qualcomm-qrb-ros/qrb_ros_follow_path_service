@@ -20,6 +20,7 @@ TFSubscriber::TFSubscriber(std::shared_ptr<FollowPathManager> & manager,
   : LifecycleNode(node_name), manager_(manager), follow_path_server_(follow_path)
 {
   RCLCPP_INFO(logger_, "Creating");
+  init_tf();
   print_pose_count_ = 0;
 }
 
@@ -31,26 +32,26 @@ TFSubscriber::~TFSubscriber()
 LifecycleNodeInterface::CallbackReturn TFSubscriber::on_configure(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Configuring");
-  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
 LifecycleNodeInterface::CallbackReturn TFSubscriber::on_activate(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Activating");
+  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
 LifecycleNodeInterface::CallbackReturn TFSubscriber::on_deactivate(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Deactivating");
+  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
 LifecycleNodeInterface::CallbackReturn TFSubscriber::on_cleanup(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Cleaning up");
-  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -66,7 +67,7 @@ PoseStamped TFSubscriber::get_current_pose()
   return target_pose_;
 }
 
-void TFSubscriber::init_subscriber()
+void TFSubscriber::init_tf()
 {
   std::unique_lock<std::mutex> lck(mtx_);
   tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
@@ -96,7 +97,10 @@ void TFSubscriber::init_subscriber()
   target_pose_.pose.orientation.w = q.w();
   target_pose_.header.stamp = this->now();
   target_pose_.header.frame_id = target_frame_;
+}
 
+void TFSubscriber::init_subscriber()
+{
   std::chrono::milliseconds duration(200);
   timer_ = this->create_wall_timer(duration, std::bind(&TFSubscriber::convert_tf_to_pose, this));
 

@@ -12,6 +12,9 @@ namespace navigation
 LaserScanSubscriber::LaserScanSubscriber(std::shared_ptr<FollowPathManager> & manager)
   : LifecycleNode("laser_sub"), manager_(manager)
 {
+  tf_buffer_ = std::make_shared<tf2_ros::Buffer>(get_clock());
+  tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+  RCLCPP_INFO(logger_, "LaserScanSubscriber");
 }
 
 LaserScanSubscriber::~LaserScanSubscriber()
@@ -23,7 +26,6 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_configure(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Configuring");
-  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -31,6 +33,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_activate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Activating");
+  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -38,6 +41,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_deactivate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Deactivating");
+  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -45,7 +49,6 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_cleanup(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Cleaning up");
-  deinit_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -63,9 +66,6 @@ void LaserScanSubscriber::init_subscriber()
   using namespace std::placeholders;
   sub_ = create_subscription<sensor_msgs::msg::LaserScan>("scan", rclcpp::SystemDefaultsQoS(),
       std::bind(&LaserScanSubscriber::laser_callback, this, std::placeholders::_1));
-
-  tf_buffer_ = std::make_shared<tf2_ros::Buffer>(get_clock());
-  tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 }
 
 void LaserScanSubscriber::deinit_subscriber()
