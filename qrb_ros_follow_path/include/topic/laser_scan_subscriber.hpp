@@ -54,6 +54,7 @@ private:
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
   std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
   uint64_t print_laser_count_;
+  bool active_;
   rclcpp::Logger logger_{ rclcpp::get_logger("laser_scan_subscriber") };
 };
 
