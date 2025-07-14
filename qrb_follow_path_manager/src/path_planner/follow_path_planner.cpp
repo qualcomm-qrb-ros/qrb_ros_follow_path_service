@@ -965,7 +965,7 @@ uint32_t FollowPathPlanner::get_current_point_waypoint_id()
 
   std::vector<uint32_t> list;
   bool result = manager_->get_waypoint_id_list(list);
-  if (result) {
+  if (!result) {
     printf("[%s]: Get waypoint id list failed\n", logger_);
     return 0;
   }

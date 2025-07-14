@@ -14,6 +14,7 @@ LaserScanSubscriber::LaserScanSubscriber(std::shared_ptr<FollowPathManager> & ma
 {
   tf_buffer_ = std::make_shared<tf2_ros::Buffer>(get_clock());
   tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+  active_ = false;
   RCLCPP_INFO(logger_, "LaserScanSubscriber");
 }
 
@@ -26,6 +27,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_configure(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Configuring");
+  init_subscriber();
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -33,7 +35,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_activate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Activating");
-  init_subscriber();
+  active_ = true;
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -41,7 +43,7 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_deactivate(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Deactivating");
-  deinit_subscriber();
+  active_ = false;
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -49,6 +51,8 @@ LifecycleNodeInterface::CallbackReturn LaserScanSubscriber::on_cleanup(
     const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(logger_, "Cleaning up");
+  deinit_subscriber();
+  active_ = false;
   return LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
@@ -76,17 +80,11 @@ void LaserScanSubscriber::deinit_subscriber()
 
 void LaserScanSubscriber::laser_callback(sensor_msgs::msg::LaserScan::ConstSharedPtr scan)
 {
-  RCLCPP_DEBUG(logger_, "receive a laser scan");
-  std::lock_guard<std::mutex> lock(mutex_);
-  geometry_msgs::msg::TransformStamped transformStamped;
-
-  try {
-    transformStamped = tf_buffer_->lookupTransform(  //"map", "base_scan",
-        "map", "laser", tf2::TimePoint(), tf2::durationFromSec(1.0));
-  } catch (tf2::LookupException & ex) {
-    RCLCPP_INFO(logger_, "transform from laser to map not ready");
+  if (!active_) {
+    RCLCPP_INFO(logger_, "node is not active");
     return;
   }
+  std::lock_guard<std::mutex> lock(mutex_);
 
   if (print_laser_count_ % 300 == 0) {
     RCLCPP_INFO(logger_, "receive a scan");
