@@ -1087,7 +1087,6 @@ void FollowPathPlanner::print_follow_path(std::vector<waypoint_2d> & path, bool 
     str.append(")");
   }
   printf("[%s]: follow_path:%s\n", logger_, str.c_str());
-  save_navigation_path(str);
 }
 
 void FollowPathPlanner::print_follow_path(std::vector<point_2d> & path, bool print)
@@ -1124,7 +1123,6 @@ void FollowPathPlanner::print_follow_path(std::vector<point_2d> & path, bool pri
     str.append(",");
   }
   printf("[%s]: follow_path:%s\n", logger_, str.c_str());
-  save_navigation_path(str);
 }
 
 void FollowPathPlanner::print_follow_path(std::vector<uint32_t> & path)

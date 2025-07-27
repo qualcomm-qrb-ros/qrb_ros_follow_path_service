@@ -93,7 +93,7 @@ rclcpp_action::GoalResponse FollowPathActionServer::handle_goal(
 {
   RCLCPP_INFO(logger_, "Start follow path from amr controller");
   (void)uuid;
-  uint32_t goal_id = goal->goal;
+  goal_id_ = goal->goal;
 
   passing_ids_.clear();
 
@@ -102,18 +102,33 @@ rclcpp_action::GoalResponse FollowPathActionServer::handle_goal(
     passing_ids_.push_back(goal->passing_waypoint_ids[i]);
   }
 
+  RCLCPP_INFO(logger_, "ACCEPT_AND_EXECUTE");
+  return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+}
+
+void FollowPathActionServer::handle_accepted(
+    const std::shared_ptr<GoalHandleFollowPath> goal_handle)
+{
+  server_global_handle_ = goal_handle;
+
+  rclcpp_action::GoalUUID uuid = goal_handle->get_goal_id();
+  uint64_t request_id = request_id_map_[uuid];
+  RCLCPP_INFO(logger_, "handle accepted, request_id=%ld, uuid=%d", request_id, uuid);
+  handle_map_.insert(
+      std::pair<uint64_t, std::shared_ptr<GoalHandleFollowPath>>(request_id, goal_handle));
+
   if (manager_ != nullptr) {
-    uint64_t request_id = manager_->request_follow_path(goal_id, passing_ids_);
+    uint64_t request_id = manager_->request_follow_path(goal_id_, passing_ids_);
     if (request_id != 0) {
       RCLCPP_INFO(logger_, "request follow path, request_id=%ld, uuid=%d", request_id, uuid);
       navigating_ = true;
       request_id_map_.insert(std::pair<rclcpp_action::GoalUUID, uint64_t>(uuid, request_id));
-      return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
     } else {
+      auto action_result = std::make_shared<FollowPath::Result>();
+      goal_handle->abort(action_result);
       RCLCPP_INFO(logger_, "request follow path failed");
     }
   }
-  return rclcpp_action::GoalResponse::REJECT;
 }
 
 rclcpp_action::CancelResponse FollowPathActionServer::handle_cancel(
@@ -127,18 +142,6 @@ rclcpp_action::CancelResponse FollowPathActionServer::handle_cancel(
     return rclcpp_action::CancelResponse::ACCEPT;
   }
   return rclcpp_action::CancelResponse::REJECT;
-}
-
-void FollowPathActionServer::handle_accepted(
-    const std::shared_ptr<GoalHandleFollowPath> goal_handle)
-{
-  server_global_handle_ = goal_handle;
-
-  rclcpp_action::GoalUUID uuid = goal_handle->get_goal_id();
-  uint64_t request_id = request_id_map_[uuid];
-  RCLCPP_INFO(logger_, "handle accepted, request_id=%ld, uuid=%d", request_id, uuid);
-  handle_map_.insert(
-      std::pair<uint64_t, std::shared_ptr<GoalHandleFollowPath>>(request_id, goal_handle));
 }
 
 void FollowPathActionServer::update_current_pose(PoseStamped & pose)
@@ -222,13 +225,16 @@ void FollowPathActionServer::receive_navigation_callback(uint64_t request_id, bo
   }
 
   if (result) {
+    action_result->result = true;
     handle->succeed(action_result);
     RCLCPP_INFO(logger_, "Goal succeeded");
   } else {
     if (handle->is_canceling()) {
+      action_result->result = false;
       handle->canceled(action_result);
       RCLCPP_INFO(logger_, "Goal canceled");
     } else {
+      action_result->result = false;
       handle->abort(action_result);
       RCLCPP_INFO(logger_, "Goal abort");
     }
