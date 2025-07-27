@@ -71,6 +71,7 @@ private:
   std::map<uint64_t, std::shared_ptr<GoalHandleFollowPath>> handle_map_;
   std::vector<uint32_t> passing_ids_;
   bool navigating_;
+  uint32_t goal_id_;
 
   rclcpp::Logger logger_{ rclcpp::get_logger("follow_path_action_server") };
 };
