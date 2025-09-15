@@ -10,7 +10,7 @@
 #include "obstacle_detector/obstacle_detector.hpp"
 #include "controller/pid_controller.hpp"
 
-#include "common.hpp"
+#include "common/common.hpp"
 
 #define BASE_MIN_ANGULAR_VELOCITY 0.25  // the min rotational angular velocity by base
 

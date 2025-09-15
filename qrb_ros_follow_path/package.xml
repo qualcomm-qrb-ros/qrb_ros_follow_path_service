@@ -18,7 +18,7 @@
   <depend>rcutils</depend>
   <depend>tf2</depend>
   <depend>nav_2d_msgs</depend>
-  <depend>Eigen3</depend>
+  <depend>eigen</depend>
   <depend>tf2_ros</depend>
   <depend>tf2_geometry_msgs</depend>
   <depend>qrb_ros_amr_msgs</depend>

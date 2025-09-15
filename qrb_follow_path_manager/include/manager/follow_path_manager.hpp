@@ -6,10 +6,10 @@
 #ifndef QRB_NAVIGATION__FOLLOW_PATH_MANAGER_HPP_
 #define QRB_NAVIGATION__FOLLOW_PATH_MANAGER_HPP_
 
-#include "follow_path_planner.hpp"
-#include "obstacle_detector.hpp"
-#include "pid_controller.hpp"
-#include "common.hpp"
+#include "path_planner/follow_path_planner.hpp"
+#include "obstacle_detector/obstacle_detector.hpp"
+#include "controller/pid_controller.hpp"
+#include "common/common.hpp"
 #include <string.h>
 
 namespace qrb

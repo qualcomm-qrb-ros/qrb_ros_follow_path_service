@@ -7,7 +7,7 @@
 #define QRB_NAVIGATION__VIRTUAL_PATH_MANAGER_HPP_
 
 #include "virtual_path_helper.hpp"
-#include "common.hpp"
+#include "common/common.hpp"
 
 #define VIRTUAL_PATH_FILE_PATH "navigation/virtual_path.xml"
 #define VIRTUAL_PATH_BAKEUP_FILE_PATH "navigation/virtual_path_backup.xml"

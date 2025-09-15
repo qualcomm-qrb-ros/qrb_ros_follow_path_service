@@ -6,7 +6,7 @@
 #ifndef QRB_ROS_NAVIGATION__VIRTUAL_PATH_SERVICE_SERVER_HPP_
 #define QRB_ROS_NAVIGATION__VIRTUAL_PATH_SERVICE_SERVER_HPP_
 
-#include "follow_path_manager.hpp"
+#include "manager/follow_path_manager.hpp"
 #include "manager/ros_common.hpp"
 
 using namespace qrb::navigation;

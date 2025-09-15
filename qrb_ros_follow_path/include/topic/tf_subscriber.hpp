@@ -6,7 +6,7 @@
 #ifndef QRB_ROS_NAVIGATION__TF_SUBSCRIBER_HPP_
 #define QRB_ROS_NAVIGATION__TF_SUBSCRIBER_HPP_
 
-#include "follow_path_manager.hpp"
+#include "manager/follow_path_manager.hpp"
 #include "manager/ros_common.hpp"
 #include "action/follow_path_action_server.hpp"
 

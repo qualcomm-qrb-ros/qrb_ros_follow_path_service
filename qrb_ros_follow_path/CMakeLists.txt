@@ -26,6 +26,8 @@ find_package(qrb_follow_path_manager REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 ament_auto_find_build_dependencies()
 
+include_directories(${qrb_follow_path_manager_INCLUDE_DIRS})
+
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/include/topic
@@ -33,14 +35,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/action
     ${PROJECT_SOURCE_DIR}/include/manager
     ${EIGEN3_INCLUDE_DIRS}
-    ${CMAKE_SYSROOT}/usr/include/qrb_follow_path_manager/
-    ${CMAKE_SYSROOT}/usr/include/qrb_follow_path_manager/include/
-    ${PROJECT_SOURCE_DIR}/../install/qrb_follow_path_manager/include/qrb_follow_path_manager/
-    ${PROJECT_SOURCE_DIR}/../install/qrb_follow_path_manager/include/qrb_follow_path_manager/include/
-    ${PROJECT_SOURCE_DIR}/../install/include/qrb_follow_path_manager/
-    ${PROJECT_SOURCE_DIR}/../install/include/qrb_follow_path_manager/include/
     )
-#include_directories(${JSON_INC_PATH})
+
 add_definitions(${EIGEN3_DEFINITIONS})
 
 set(source
@@ -84,10 +80,6 @@ ament_target_dependencies(qrb_ros_follow_path
 
 target_link_libraries(qrb_ros_follow_path
   tinyxml2
-)
-
-target_link_libraries(qrb_ros_follow_path
-  "qrb_follow_path_manager"
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

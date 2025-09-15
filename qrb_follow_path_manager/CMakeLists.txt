@@ -11,6 +11,8 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 find_package(Eigen3 REQUIRED)
 
+ament_export_include_directories(include)
+
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/include/common
@@ -21,7 +23,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/obstacle_detector
     ${EIGEN3_INCLUDE_DIRS}
     )
-#include_directories(${JSON_INC_PATH})
+
 add_definitions(${EIGEN3_DEFINITIONS})
 
 add_library(${library_name} SHARED
@@ -34,15 +36,6 @@ add_library(${library_name} SHARED
   src/obstacle_detector/obstacle_detector.cpp
 )
 
-aux_source_directory(./src SRC_LIST)
-
-target_link_libraries(qrb_follow_path_manager
-  tinyxml2
-)
-
-ament_target_dependencies(qrb_follow_path_manager
-
-)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
   VERSION ${PROJECT_VERSION}
@@ -50,26 +43,14 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 install(TARGETS qrb_follow_path_manager
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
-)
-
-install(TARGETS ${PROJECT_NAME}
+  EXPORT export_qrb_follow_path_manager
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 
-file(GLOB_RECURSE HEADER_FILES
-  "${CMAKE_SOURCE_DIR}/include/*.h"
-  "${CMAKE_SOURCE_DIR}/include/*.hpp"
-)
+ament_export_targets(export_qrb_follow_path_manager)
 
-install(FILES ${HEADER_FILES}
-  DESTINATION include/${PROJECT_NAME}/
-)
-
-install(DIRECTORY
-  include
-  DESTINATION include/${PROJECT_NAME}/
-)
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 
 ament_auto_package()
