@@ -105,7 +105,7 @@ rclcpp_action::GoalResponse FollowPathActionServer::handle_goal(
   if (manager_ != nullptr) {
     uint64_t request_id = manager_->request_follow_path(goal_id, passing_ids_);
     if (request_id != 0) {
-      RCLCPP_INFO(logger_, "request follow path, request_id=%ld, uuid=%d", request_id, uuid);
+      RCLCPP_INFO(logger_, "request follow path, request_id=%ld", request_id);
       navigating_ = true;
       request_id_map_.insert(std::pair<rclcpp_action::GoalUUID, uint64_t>(uuid, request_id));
       return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
@@ -136,7 +136,7 @@ void FollowPathActionServer::handle_accepted(
 
   rclcpp_action::GoalUUID uuid = goal_handle->get_goal_id();
   uint64_t request_id = request_id_map_[uuid];
-  RCLCPP_INFO(logger_, "handle accepted, request_id=%ld, uuid=%d", request_id, uuid);
+  RCLCPP_INFO(logger_, "handle accepted, request_id=%ld", request_id);
   handle_map_.insert(
       std::pair<uint64_t, std::shared_ptr<GoalHandleFollowPath>>(request_id, goal_handle));
 }

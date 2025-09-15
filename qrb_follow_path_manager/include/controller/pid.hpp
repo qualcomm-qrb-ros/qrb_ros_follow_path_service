@@ -6,7 +6,7 @@
 #ifndef QRB_NAVIGATION__PID_HPP
 #define QRB_NAVIGATION__PID_HPP
 
-#include "common.hpp"
+#include "common/common.hpp"
 
 namespace qrb
 {

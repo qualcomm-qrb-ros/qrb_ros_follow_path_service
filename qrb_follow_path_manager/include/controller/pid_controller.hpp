@@ -6,7 +6,7 @@
 #define QRB_NAVIGATION__PID_CONTROLLER_HPP
 
 #include "pid.hpp"
-#include "common.hpp"
+#include "common/common.hpp"
 
 namespace qrb
 {

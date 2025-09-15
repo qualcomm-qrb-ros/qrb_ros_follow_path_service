@@ -6,7 +6,7 @@
 #ifndef QRB_ROS_NAVIGATION__MAP_SUBSCRIBER_HPP_
 #define QRB_ROS_NAVIGATION__MAP_SUBSCRIBER_HPP_
 
-#include "follow_path_manager.hpp"
+#include "manager/follow_path_manager.hpp"
 #include "manager/ros_common.hpp"
 #include "laser_scan_subscriber.hpp"
 

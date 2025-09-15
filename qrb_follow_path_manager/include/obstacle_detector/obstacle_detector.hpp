@@ -6,7 +6,7 @@
 #ifndef QRB_NAVIGATION__OBSTACLE_DETECTOR_
 #define QRB_NAVIGATION__OBSTACLE_DETECTOR_
 
-#include "common.hpp"
+#include "common/common.hpp"
 
 namespace qrb
 {
