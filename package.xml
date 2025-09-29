@@ -2,12 +2,13 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>qrb_ros_follow_path</name>
-  <version>1.0.0</version>
+  <version>1.0.4</version>
   <description>Provide the ros interfaces</description>
-  <maintainer email="quic_xiaowz@quicinc.com">xiaowz</maintainer>
+
   <license>BSD-3-Clause-Clear</license>
 
   <author email="quic_xiaowz@quicinc.com">xiaowz</author>
+  <maintainer email="quic_xiaowz@quicinc.com">xiaowz</maintainer>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
@@ -25,7 +26,6 @@
   <depend>qrb_ros_navigation_msgs</depend>
   <depend>qrb_ros_robot_base_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend>tinyxml2</depend>
   <depend>qrb_follow_path_manager</depend>
 
   <export>
