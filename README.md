@@ -483,6 +483,28 @@ git clone https://github.com/qualcomm-qrb-ros/qrb_ros_interfaces.git
 colcon build
 ```
 
+## 👨‍💻 Install from Qualcomm IOT PPA
+Developers can also choose to install directly instead of downloading and compiling the source code.
+
+Add Qualcomm IOT PPA for Ubuntu:
+
+```bash
+sudo add-apt-repository ppa:ubuntu-qcom-iot/qcom-noble-ppa
+sudo add-apt-repository ppa:ubuntu-qcom-iot/qirp
+sudo apt update
+```
+
+Install Debian package:
+
+```bash
+sudo apt install ros-jazzy-nav2-msgs
+sudo apt install ros-jazzy-nav-2d-msgs
+sudo apt install ros-jazzy-qrb-ros-amr-msgs
+sudo apt install ros-jazzy-qrb-ros-navigation-msgs
+sudo apt install ros-jazzy-qrb-follow-path-manager
+sudo apt install ros-jazzy-qrb-ros-follow-path
+```
+
 ## 🚀 Usage
 
 ### Start the follow path service node
@@ -544,6 +566,7 @@ Yes, it can support other AMRs.
 ## 📜 License
 
 Project is licensed under the [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html) License. See [LICENSE](./LICENSE) for the full license text.
+
 
 
 
