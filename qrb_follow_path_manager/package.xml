@@ -2,17 +2,17 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>qrb_follow_path_manager</name>
-  <version>1.0.0</version>
+  <version>1.0.4</version>
   <description>Implement follow path navigation</description>
   <maintainer email="quic_xiaowz@quicinc.com">xiaowz</maintainer>
   <license>BSD-3-Clause-Clear</license>
 
   <author email="quic_xiaowz@quicinc.com">xiaowz</author>
+  <maintainer email="quic_xiaowz@quicinc.com">xiaowz</maintainer>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <depend>eigen</depend>
-  <depend>tinyxml2</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
