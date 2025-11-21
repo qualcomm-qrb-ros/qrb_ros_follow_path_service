@@ -491,6 +491,8 @@ colcon build
 ```
 If an exception occurs during build, please use the following command to build.
 ```bash
+sudo apt-get clean
+sudo rm -rf /tmp/*
 source /opt/ros/jazzy/setup.bash
 colcon build --parallel-workers 1
 ```
