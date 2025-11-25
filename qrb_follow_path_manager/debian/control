@@ -2,7 +2,7 @@ Source: ros-jazzy-qrb-follow-path-manager
 Section: misc
 Priority: optional
 Maintainer: xiaowz <quic_xiaowz@quicinc.com>
-Build-Depends: debhelper-compat(=13), ros-jazzy-ament-cmake-auto, libeigen3-dev, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>
+Build-Depends: debhelper-compat(=13), ros-jazzy-ament-cmake-auto, libeigen3-dev, libtinyxml2-dev, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>
 Homepage: https://github.com/qualcomm-qrb-ros/qrb_ros_folow_path_service
 Standards-Version: 3.9.2
 
